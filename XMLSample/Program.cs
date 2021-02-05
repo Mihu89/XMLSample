@@ -8,8 +8,35 @@ namespace XMLSample
         static void Main(string[] args)
         {
             Console.WriteLine("XML Intro");
-            GenerateXML();
+            //GenerateXML();
+            ReadXml();
+        }
 
+        private static void ReadXml()
+        {
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.Load(@"C:\Users\Mihu\Documents\XMLSample\XMLSample\users.xml");
+            // get root node
+            XmlElement xRoot = xDoc.DocumentElement;
+            // parse nodes
+            foreach (XmlNode xNode in xRoot)
+            {
+                if (xNode.Attributes.Count > 0){
+                    XmlNode attribute  = xNode.Attributes.GetNamedItem("name");
+                    if(attribute != null){
+                        System.Console.WriteLine(attribute.Value);
+                    }
+                    foreach(XmlNode childNode in xNode.ChildNodes){
+                        if(childNode.Name =="company"){
+                            System.Console.WriteLine($"Company: {childNode.InnerText}");
+                        }
+                        if(childNode.Name =="age"){
+                            System.Console.WriteLine($"User age: {childNode.InnerText}");
+                        }
+                    }
+                    System.Console.WriteLine();
+                }
+            }
         }
 
         private static void GenerateXML()
