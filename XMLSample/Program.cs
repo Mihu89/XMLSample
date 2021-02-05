@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace XMLSample
 {
@@ -9,7 +10,92 @@ namespace XMLSample
         {
             Console.WriteLine("XML Intro");
             //GenerateXML();
-            ReadXml();
+            // ReadXml();
+            GenerateXml_Manipulations();
+        }
+
+        private static void GenerateXml_Manipulations()
+        {
+            // Manipulation (add new node + remove first node)
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.Load(@"C:\Users\Mihu\Documents\XMLSample\XMLSample\users.xml");
+            XmlElement xRoot = xDoc.DocumentElement;
+            // Create tag
+            XmlElement user = xDoc.CreateElement("user");
+            //create attribute
+            XmlAttribute userAttr = xDoc.CreateAttribute("name");
+            XmlElement companyElem = xDoc.CreateElement("company");
+            XmlElement ageElem = xDoc.CreateElement("age");
+
+            // create info for tag
+            XmlText nameText = xDoc.CreateTextNode("Jeff Bezos");
+            XmlText companyText = xDoc.CreateTextNode("Amazon");
+            XmlText ageText = xDoc.CreateTextNode("50");
+
+            // matching tags, attributes, values
+            userAttr.AppendChild(nameText);
+            companyElem.AppendChild(companyText);
+            ageElem.AppendChild(ageText);
+
+            user.Attributes.Append(userAttr);
+            user.AppendChild(companyElem);
+            user.AppendChild(ageElem);
+
+            xRoot.AppendChild(user);
+            xDoc.Save(@"C:\Users\Mihu\Documents\XMLSample\XMLSample\users_v2.xml");
+
+            // Remove node
+            var firstNode = xRoot.FirstChild;
+            xRoot.RemoveChild(firstNode);
+            xDoc.Save(@"C:\Users\Mihu\Documents\XMLSample\XMLSample\users.xml");
+
+            // Using Linq to create XML
+            XDocument xdoc = new XDocument();
+            XElement nokia = new XElement("mobile");
+            XAttribute nokiaAttr = new XAttribute("name", "Nokia X3");
+            XElement nokiaCompany = new XElement("company", "Nokia");
+            XElement nokiaPrice = new XElement("price", "5000");
+            // matching
+            nokia.Add(nokiaAttr);
+            nokia.Add(nokiaCompany);
+            nokia.Add(nokiaPrice);
+
+            // seccond node
+             XElement galaxy = new XElement("mobile");
+            XAttribute galaxyAttr = new XAttribute("name", "Samsung Galaxy S21");
+            XElement galaxyCompany = new XElement("company", "Samsung");
+            XElement galaxyPrice = new XElement("price", "25000");
+            // matching
+            galaxy.Add(galaxyAttr);
+            galaxy.Add(galaxyCompany);
+            galaxy.Add(galaxyPrice);
+
+            // create root node
+            XElement mobiles = new XElement("mobiles");
+            // add nodes
+            mobiles.Add(nokia);
+            mobiles.Add(galaxy);
+
+            // add root tag
+            xdoc.Add(mobiles);
+
+            // Save file
+            xdoc.Save("mobiles.xml");
+
+            // CompactVersion
+            xdoc = new XDocument(new XElement("mobiles",
+                new XElement("mobile", 
+                    new XAttribute("name", "Microsoft 640XL"),
+                    new XElement("company", "Microsoft"),
+                    new XElement("price", "5500")
+                ),
+                new XElement("mobile", 
+                    new XAttribute("name", "Google Pixel X5"),
+                    new XElement("company", "Google"),
+                    new XElement("price", "15500")
+                )
+            ));
+            xdoc.Save("mobiles_v2.xml");
         }
 
         private static void ReadXml()
