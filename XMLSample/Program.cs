@@ -42,6 +42,41 @@ namespace XMLSample
             xmlTextWriter.WriteEndElement();
             xmlTextWriter.Close();
 
+            //// Answer:
+            xmlTextWriter = new XmlTextWriter(@"C:\Users\Mihu\Documents\XMLSample\XMLSample\answer.xml", null);
+            xmlTextWriter.Formatting = Formatting.Indented; 
+            xmlTextWriter.WriteStartDocument();
+            xmlTextWriter.WriteStartElement("UtilizatoriDatabase");
+            xmlTextWriter.WriteStartElement("Utilizator");
+
+            // write next element
+            xmlTextWriter.WriteStartElement("Utilizator_ID","");
+            xmlTextWriter.WriteString("123");
+            xmlTextWriter.WriteEndElement();
+            // write other element
+            xmlTextWriter.WriteStartElement("Utilizator_password","");
+            xmlTextWriter.WriteString("Aladin");
+            xmlTextWriter.WriteEndElement();
+            
+            xmlTextWriter.WriteEndElement();
+
+
+            xmlTextWriter.WriteStartElement("Utilizator");
+
+            // write next element
+            xmlTextWriter.WriteStartElement("Utilizator_ID","");
+            xmlTextWriter.WriteString("456");
+            xmlTextWriter.WriteEndElement();
+            // write other element
+            xmlTextWriter.WriteStartElement("Utilizator_password","");
+            xmlTextWriter.WriteString("Qwerty");
+            xmlTextWriter.WriteEndElement();
+            
+            xmlTextWriter.WriteEndElement();
+
+            xmlTextWriter.WriteEndDocument();
+            xmlTextWriter.Close();
+            System.Console.WriteLine("XML was generated");
 
         }
     }
